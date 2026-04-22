@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Event</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <h1 class="mb-4">Add Event</h1>
+
+    <form method="POST" class="card p-4 shadow-sm">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label class="form-label">Employee</label>
+            <select name="employee" class="form-select">
+                {% for emp in employees %}
+                    <option value="{{ emp.id }}">{{ emp.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Date</label>
+            <input type="date" name="date" class="form-control">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Event Type</label>
+            <select name="event_type" class="form-select">
+                <option value="positive">Positive</option>
+                <option value="negative">Negative</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Description</label>
+            <textarea name="description" class="form-control" rows="4"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Score</label>
+            <input type="number" name="score" class="form-control">
+        </div>
+
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-success">Save</button>
+            <a href="/employees/" class="btn btn-secondary">Back</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>

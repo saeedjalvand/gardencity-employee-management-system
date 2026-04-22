@@ -1,0 +1,130 @@
+{% extends 'employees/base.html' %}
+{% block title %}داشبۆرد{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+    <div>
+        <h1 class="page-title">داشبۆردی بەڕێوەبردنی سەوزاییەکان</h1>
+        <div class="page-subtitle">بینینی گشتیی کارمەندان، پلانەکان، چاکسازی و هەڵسەنگاندن</div>
+    </div>
+    <div class="quick-links">
+        {% if perms.employees.add_employee %}<a href="/add-employee/" class="btn btn-primary">زیادکردنی کارمەند</a>{% endif %}
+        {% if perms.employees.add_task %}<a href="/add-task/" class="btn btn-warning">زیادکردنی پلان</a>{% endif %}
+        {% if perms.employees.add_event %}<a href="/add-event/" class="btn btn-success">تۆمارکردنی هەڵسەنگاندن</a>{% endif %}
+        {% if perms.employees.add_maintenancerequest %}<a href="/add-maintenance/" class="btn btn-info">تۆمارکردنی چاکسازی</a>{% endif %}
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-md-3">
+        <div class="glass-card stat-card">
+            <span class="badge-soft">کارمەندان</span>
+            <h3>{{ total_employees }}</h3>
+            <p>ژمارەی گشتی کارمەندان</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="glass-card stat-card">
+            <span class="badge-soft">پلانەکان</span>
+            <h3>{{ total_tasks }}</h3>
+            <p>کۆی گشتی پلانەکان</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="glass-card stat-card">
+            <span class="badge-soft">لە جێبەجێکردندا</span>
+            <h3>{{ open_tasks }}</h3>
+            <p>پلانە کراوەکان</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="glass-card stat-card">
+            <span class="badge-soft">چاکسازییە کراوەکان</span>
+            <h3>{{ open_maintenance }}</h3>
+            <p>داواکارییە کاراكان</p>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-lg-7">
+        <div class="glass-card p-4 h-100">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="mb-0">باشترین کارمەندان</h4>
+                <a href="/scores/" class="btn btn-outline-secondary btn-sm">بینینی هەموو</a>
+            </div>
+            <table class="table table-striped align-middle">
+                <thead>
+                    <tr>
+                        <th>ناو</th>
+                        <th>پۆست</th>
+                        <th>خاڵ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in score_rows %}
+                    <tr>
+                        <td>{{ row.employee.name }}</td>
+                        <td>{{ row.employee.position }}</td>
+                        <td><strong>{{ row.score }}</strong></td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="3">هێشتا هیچ داتایەک تۆمار نەکراوە.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="col-lg-5">
+        <div class="glass-card p-4 h-100">
+            <h4 class="mb-3">دەستگەیشتنی خێرا</h4>
+            <div class="d-grid gap-2">
+                <a href="/employees/" class="btn btn-outline-primary">لیستی کارمەندان</a>
+                <a href="/tasks/" class="btn btn-outline-warning">پلان / To-Do</a>
+                <a href="/maintenance/" class="btn btn-outline-info">داواکاریی چاکسازی</a>
+                <a href="/assets/" class="btn btn-outline-secondary">کەرەستە و ئامێر</a>
+                <a href="/admin/" class="btn btn-outline-dark">بەڕێوەبردنی سیستەم</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-6">
+        <div class="glass-card p-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="mb-0">دوایین پلانەکان</h5>
+                <a href="/tasks/" class="btn btn-sm btn-outline-secondary">زیاتر</a>
+            </div>
+            <ul class="list-group list-group-flush">
+                {% for item in recent_tasks %}
+                <li class="list-group-item px-0">
+                    <strong>{{ item.title }}</strong> — {{ item.status }}
+                </li>
+                {% empty %}
+                <li class="list-group-item px-0">هیچ پلانێک تۆمار نەکراوە.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="glass-card p-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="mb-0">دوایین چاکسازییەکان</h5>
+                <a href="/maintenance/" class="btn btn-sm btn-outline-secondary">زیاتر</a>
+            </div>
+            <ul class="list-group list-group-flush">
+                {% for item in recent_maintenance %}
+                <li class="list-group-item px-0">
+                    <strong>{{ item.title }}</strong> — {{ item.status }}
+                </li>
+                {% empty %}
+                <li class="list-group-item px-0">هیچ داواکارییەکی چاکسازی تۆمار نەکراوە.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

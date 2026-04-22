@@ -1,0 +1,47 @@
+{% extends 'employees/base.html' %}
+{% block title %}چاکسازی{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+    <div>
+        <h1 class="page-title">چاکسازیی سیستەمی ئاودان و کەرەستەکان</h1>
+        <div class="page-subtitle">پەمپ، ڤاڵڤ، بۆری، فلتەر، سپرینکلەر و کۆنترۆڵەر</div>
+    </div>
+    {% if perms.employees.add_maintenancerequest %}
+    <a href="/add-maintenance/" class="btn btn-info">تۆمارکردنی داواکاریی چاکسازی</a>
+    {% endif %}
+</div>
+
+<div class="glass-card p-4">
+    <table class="table table-bordered table-striped align-middle">
+        <thead>
+            <tr>
+                <th>ناونیشان</th>
+                <th>کەرەستە</th>
+                <th>بەڕێوەبەر / ئەنجامدەر</th>
+                <th>بەروار</th>
+                <th>کاتی پێشبینی کراو</th>
+                <th>کاتی واقعی</th>
+                <th>گرنگی</th>
+                <th>دۆخ</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in requests %}
+            <tr>
+                <td>{{ item.title }}</td>
+                <td>{{ item.asset }}</td>
+                <td>{{ item.assigned_to }}</td>
+                <td>{{ item.planned_date }}</td>
+                <td>{{ item.estimated_hours }}</td>
+                <td>{{ item.actual_hours }}</td>
+                <td>{{ item.priority }}</td>
+                <td>{{ item.status }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="8">هیچ داواکارییەکی چاکسازی تۆمار نەکراوە.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

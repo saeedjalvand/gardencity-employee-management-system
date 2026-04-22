@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ckb" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>چوونەژوورەوە | Garden City</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link href="{% static 'css/app.css' %}" rel="stylesheet">
+    <script src="{% static 'js/theme.js' %}"></script>
+</head>
+<body onload="initTheme()">
+    <div class="login-shell">
+        <div class="glass-card login-card">
+            <img src="{% static 'images/garden-city-logo.jpg' %}" alt="Garden City Logo" class="logo-img mb-3">
+
+            <div class="login-title">GARDEN CITY</div>
+            <div class="login-subtitle mb-3">Close to nature, closer to life</div>
+            <div class="page-subtitle mb-4">سیستەمی بەڕێوەبردنی کارمەندان و کارەکانی سەوزاییەکان</div>
+
+            {% if error_message %}
+                <div style="background:#ffe5e5;color:#b42318;border:1px solid #f5b5b5;padding:14px;border-radius:12px;margin-bottom:18px;">
+                    {{ error_message }}
+                </div>
+            {% endif %}
+
+            <form method="POST">
+                {% csrf_token %}
+                <input type="text" name="username" class="login-input" placeholder="ناوی بەکارهێنەر" required>
+                <input type="password" name="password" class="login-input" placeholder="وشەی نهێنی" required>
+                <button type="submit" class="btn brand-gradient w-100" style="height:68px;font-size:1.35rem;">چوونەژوورەوە</button>
+            </form>
+
+            <div class="d-flex justify-content-center mt-4">
+                <select id="themeSelect" class="form-select theme-select" onchange="applyTheme(this.value)">
+                    <option value="default">ڕووکاری ڕووناک</option>
+                    <option value="theme-dark">شێوازی شەو</option>
+                    <option value="theme-forest">شێوازی سەوز</option>
+                    <option value="theme-sunset">شێوازی ئاوا بوون</option>
+                    <option value="theme-ocean">شێوازی شین</option>
+                </select>
+            </div>
+
+            <div class="footer-note mt-4">Employee Management System V1.1</div>
+        </div>
+    </div>
+</body>
+</html>

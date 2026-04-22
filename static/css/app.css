@@ -1,0 +1,307 @@
+:root {
+    --bg: #eef2f3;
+    --bg-soft: #f6f8fb;
+    --card: rgba(255,255,255,0.90);
+    --card-2: #ffffff;
+    --text: #1e2b42;
+    --muted: #6f7b91;
+    --border: #dde3ec;
+    --accent1: #f0445f;
+    --accent2: #8d2df1;
+    --success: #1fa750;
+    --warning: #f59f00;
+    --info: #0ea5e9;
+    --danger: #dc3545;
+    --shadow: 0 18px 40px rgba(0,0,0,.08);
+    --nav-bg: rgba(255,255,255,.85);
+}
+
+body.theme-dark {
+    --bg: #0f1724;
+    --bg-soft: #111b2b;
+    --card: rgba(20, 28, 40, 0.92);
+    --card-2: #162031;
+    --text: #f2f6fb;
+    --muted: #b1bdd1;
+    --border: #273449;
+    --shadow: 0 18px 40px rgba(0,0,0,.35);
+    --nav-bg: rgba(16, 23, 36, .85);
+}
+
+body.theme-forest {
+    --bg: #eef8f0;
+    --bg-soft: #f4fbf5;
+    --card: rgba(255,255,255,0.92);
+    --card-2: #ffffff;
+    --text: #173626;
+    --muted: #5d7a68;
+    --border: #d5eadb;
+    --accent1: #1fa750;
+    --accent2: #6abf4b;
+    --shadow: 0 18px 40px rgba(31,167,80,.10);
+    --nav-bg: rgba(255,255,255,.88);
+}
+
+body.theme-sunset {
+    --bg: #fff3ec;
+    --bg-soft: #fff8f4;
+    --card: rgba(255,255,255,0.94);
+    --card-2: #ffffff;
+    --text: #3d2630;
+    --muted: #7f6770;
+    --border: #f0d9d9;
+    --accent1: #ff6b6b;
+    --accent2: #ff9f43;
+    --shadow: 0 18px 40px rgba(255,107,107,.12);
+    --nav-bg: rgba(255,255,255,.88);
+}
+
+body.theme-ocean {
+    --bg: #ebf7ff;
+    --bg-soft: #f5fbff;
+    --card: rgba(255,255,255,0.94);
+    --card-2: #ffffff;
+    --text: #163248;
+    --muted: #5e7c93;
+    --border: #d9eaf4;
+    --accent1: #0ea5e9;
+    --accent2: #2563eb;
+    --shadow: 0 18px 40px rgba(37,99,235,.12);
+    --nav-bg: rgba(255,255,255,.88);
+}
+
+html, body {
+    min-height: 100%;
+}
+
+body {
+    background:
+        radial-gradient(circle at top left, rgba(255,255,255,.6), transparent 28%),
+        radial-gradient(circle at bottom right, rgba(255,255,255,.45), transparent 22%),
+        var(--bg);
+    color: var(--text);
+    font-family: Inter, sans-serif;
+    transition: background .25s ease, color .25s ease;
+}
+
+a {
+    text-decoration: none;
+}
+
+.glass-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(12px);
+}
+
+.brand-gradient {
+    background: linear-gradient(90deg, var(--accent1), var(--accent2));
+    color: white !important;
+    border: none !important;
+}
+
+.topbar-wrap {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: var(--nav-bg);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+}
+
+.topbar-brand {
+    font-size: 1.2rem;
+    font-weight: 800;
+    letter-spacing: .5px;
+    color: var(--text) !important;
+}
+
+.nav-pill {
+    padding: .55rem .9rem;
+    border-radius: 999px;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+    transition: .2s ease;
+    font-size: .92rem;
+}
+
+.nav-pill:hover {
+    background: var(--card-2);
+    color: var(--text);
+}
+
+.page-title {
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 0;
+}
+
+.page-subtitle {
+    color: var(--muted);
+}
+
+.stat-card {
+    padding: 1.25rem;
+}
+
+.stat-card h3 {
+    font-size: 2rem;
+    margin-bottom: .25rem;
+    color: var(--text);
+    font-weight: 800;
+}
+
+.stat-card p {
+    margin-bottom: 0;
+    color: var(--muted);
+}
+
+.logo-img {
+    max-width: 220px;
+}
+
+.table {
+    color: var(--text) !important;
+    --bs-table-bg: transparent;
+    --bs-table-color: var(--text);
+    --bs-table-border-color: var(--border);
+    --bs-table-striped-bg: rgba(127, 123, 145, 0.05);
+    --bs-table-striped-color: var(--text);
+    --bs-table-hover-bg: rgba(127, 123, 145, 0.08);
+    --bs-table-hover-color: var(--text);
+}
+
+.table thead th {
+    background: rgba(0,0,0,.06) !important;
+    color: var(--text) !important;
+    border-color: var(--border) !important;
+    vertical-align: middle;
+}
+
+body.theme-dark .table thead th {
+    background: rgba(255,255,255,.05) !important;
+}
+
+.table td, .table th {
+    color: var(--text) !important;
+    border-color: var(--border) !important;
+}
+
+.list-group-item {
+    background: transparent !important;
+    color: var(--text) !important;
+    border-color: var(--border) !important;
+}
+
+.form-control,
+.form-select,
+textarea {
+    background: var(--card-2) !important;
+    color: var(--text) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 14px !important;
+    padding: .8rem .95rem !important;
+}
+
+.form-control::placeholder {
+    color: var(--muted) !important;
+}
+
+.form-label,
+label,
+p,
+span,
+small,
+div {
+    color: inherit;
+}
+
+.btn {
+    border-radius: 14px;
+    padding: .65rem 1rem;
+    font-weight: 600;
+}
+
+.theme-select {
+    max-width: 180px;
+    min-width: 180px;
+}
+
+.login-shell {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem 1rem;
+}
+
+.login-card {
+    width: 760px;
+    max-width: 95%;
+    padding: 42px 54px;
+    text-align: center;
+}
+
+.login-title {
+    font-size: 3rem;
+    font-weight: 800;
+    color: var(--text);
+}
+
+.login-subtitle {
+    font-size: 1.2rem;
+    color: var(--muted);
+}
+
+.login-input {
+    width: 100%;
+    height: 66px;
+    border-radius: 18px;
+    padding: 0 22px;
+    margin-bottom: 16px;
+    border: 1px solid var(--border);
+    background: var(--card-2);
+    color: var(--text);
+    font-size: 1.05rem;
+}
+
+.footer-note {
+    color: var(--muted);
+    font-size: 1.1rem;
+}
+
+.quick-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .65rem;
+}
+
+.badge-soft {
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,.35);
+    color: var(--text);
+    padding: .3rem .65rem;
+    border-radius: 999px;
+}
+
+body.theme-dark .badge-soft {
+    background: rgba(255,255,255,.04);
+}
+
+@media (max-width: 992px) {
+    .nav-responsive {
+        flex-wrap: wrap;
+        gap: .5rem;
+    }
+
+    .login-card {
+        padding: 28px 22px;
+    }
+
+    .login-title {
+        font-size: 2.2rem;
+    }
+}
