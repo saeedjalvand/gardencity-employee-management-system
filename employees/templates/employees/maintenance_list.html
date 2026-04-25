@@ -1,47 +1,60 @@
 {% extends 'employees/base.html' %}
 {% block title %}چاکسازی{% endblock %}
+{% block banner_class %}page-banner-maintenance{% endblock %}
 
 {% block content %}
-<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+<section class="page-header-card">
     <div>
-        <h1 class="page-title">چاکسازیی سیستەمی ئاودان و کەرەستەکان</h1>
-        <div class="page-subtitle">پەمپ، ڤاڵڤ، بۆری، فلتەر، سپرینکلەر و کۆنترۆڵەر</div>
+        <div class="eyebrow">شوێنکەوتنی داواکاری</div>
+        <h2 class="section-title">داواکارییەکانی چاکسازی</h2>
+        <p class="section-copy">بینینی هەموو داواکارییەکان بە ئامێر، ئەنجامدەر، کات و دۆخ.</p>
     </div>
-    {% if perms.employees.add_maintenancerequest %}
-    <a href="/add-maintenance/" class="btn btn-info">تۆمارکردنی داواکاریی چاکسازی</a>
-    {% endif %}
-</div>
+    <div class="header-actions">
+        {% if perms.employees.add_maintenancerequest %}
+        <a href="/add-maintenance/" class="btn btn-info">تۆمارکردنی داواکاری</a>
+        {% endif %}
+    </div>
+</section>
 
-<div class="glass-card p-4">
-    <table class="table table-bordered table-striped align-middle">
-        <thead>
-            <tr>
-                <th>ناونیشان</th>
-                <th>کەرەستە</th>
-                <th>بەڕێوەبەر / ئەنجامدەر</th>
-                <th>بەروار</th>
-                <th>کاتی پێشبینی کراو</th>
-                <th>کاتی واقعی</th>
-                <th>گرنگی</th>
-                <th>دۆخ</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for item in requests %}
-            <tr>
-                <td>{{ item.title }}</td>
-                <td>{{ item.asset }}</td>
-                <td>{{ item.assigned_to }}</td>
-                <td>{{ item.planned_date }}</td>
-                <td>{{ item.estimated_hours }}</td>
-                <td>{{ item.actual_hours }}</td>
-                <td>{{ item.priority }}</td>
-                <td>{{ item.status }}</td>
-            </tr>
-            {% empty %}
-            <tr><td colspan="8">هیچ داواکارییەکی چاکسازی تۆمار نەکراوە.</td></tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
+<section class="surface-card">
+    <div class="table-shell">
+        <table class="table app-table align-middle">
+            <thead>
+                <tr>
+                    <th>ناونیشان</th>
+                    <th>کەرەستە</th>
+                    <th>ئەنجامدەر</th>
+                    <th>بەروار</th>
+                    <th>پێشبینی</th>
+                    <th>واقعی</th>
+                    <th>گرنگی</th>
+                    <th>دۆخ</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in requests %}
+                <tr>
+                    <td>{{ item.title }}</td>
+                    <td>{{ item.asset }}</td>
+                    <td>{{ item.assigned_to|default:"بەبێ دیاریکردن" }}</td>
+                    <td>{{ item.planned_date|default:"-" }}</td>
+                    <td>{{ item.estimated_hours }}</td>
+                    <td>{{ item.actual_hours }}</td>
+                    <td><span class="mini-badge mini-badge-warm">{{ item.get_priority_display }}</span></td>
+                    <td><span class="mini-badge">{{ item.get_status_display }}</span></td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="8">
+                        <div class="empty-state compact">
+                            <strong>هیچ داواکارییەکی چاکسازی نییە</strong>
+                            <span>داواکارییەکی نوێ زیاد بکە بۆ شوێنکەوتنی کار.</span>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
 {% endblock %}

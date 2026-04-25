@@ -1,0 +1,94 @@
+{% extends 'employees/base.html' %}
+{% block title %}تۆمارەکانی {{ employee.name }}{% endblock %}
+{% block banner_class %}page-banner-employee-detail{% endblock %}
+
+{% block content %}
+<section class="page-header-card">
+    <div>
+        <div class="eyebrow">پرۆفایلی کارمەند</div>
+        <h2 class="section-title">{{ employee.name }}</h2>
+        <p class="section-copy">
+            {{ employee.position }} | {{ employee.department }} | کۆد: {{ employee.code }}
+        </p>
+    </div>
+    <div class="header-actions">
+        {% if perms.employees.add_event %}<a href="/add-event/" class="btn btn-success">ڕووداوی نوێ</a>{% endif %}
+        <a href="/employees/" class="btn btn-secondary">گەڕانەوە بۆ لیست</a>
+    </div>
+</section>
+
+<section class="content-grid detail-grid">
+    <article class="surface-card">
+        <div class="section-heading">
+            <div>
+                <div class="eyebrow">زانیاریی بنەڕەتی</div>
+                <h3>وردەکاری کارمەند</h3>
+            </div>
+        </div>
+        <div class="detail-list">
+            <div><span>تەلەفۆن</span><strong>{{ employee.phone|default:"-" }}</strong></div>
+            <div><span>چالاک</span><strong>{{ employee.active|yesno:"بەڵێ,نەخێر" }}</strong></div>
+            <div><span>مۆڵەتی تۆمارکردن</span><strong>{{ employee.can_enter_data|yesno:"بەڵێ,نەخێر" }}</strong></div>
+            <div><span>سەرپەرشتیار</span><strong>{{ employee.is_supervisor|yesno:"بەڵێ,نەخێر" }}</strong></div>
+            <div><span>بەرواری دروستبوون</span><strong>{{ employee.created_at|date:"Y-m-d H:i" }}</strong></div>
+        </div>
+    </article>
+
+    <article class="surface-card">
+        <div class="section-heading">
+            <div>
+                <div class="eyebrow">سوابق و هەڵسەنگاندن</div>
+                <h3>هەموو ڕووداوەکان</h3>
+            </div>
+        </div>
+        <div class="table-shell">
+            <table class="table app-table align-middle">
+                <thead>
+                    <tr>
+                        <th>بەروار</th>
+                        <th>جۆر</th>
+                        <th>وەسف</th>
+                        <th>خاڵ</th>
+                        <th>کات</th>
+                        <th>کردار</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for event in events %}
+                    <tr>
+                        <td>{{ event.date }}</td>
+                        <td><span class="mini-badge {% if event.event_type == 'positive' %}mini-badge-success{% else %}mini-badge-danger{% endif %}">{{ event.get_event_type_display }}</span></td>
+                        <td>{{ event.description }}</td>
+                        <td>{{ event.score }}</td>
+                        <td>{{ event.duration_hours }}</td>
+                        <td>
+                            {% if perms.employees.change_event or perms.employees.delete_event %}
+                                <div class="table-actions">
+                                    {% if perms.employees.change_event %}
+                                        <a href="/events/{{ event.id }}/edit/" class="btn btn-warning btn-sm">دەستکاری</a>
+                                    {% endif %}
+                                    {% if perms.employees.delete_event %}
+                                        <a href="/events/{{ event.id }}/delete/" class="btn btn-danger btn-sm">سڕینەوە</a>
+                                    {% endif %}
+                                </div>
+                            {% else %}
+                                <span class="text-muted">مۆڵەت نییە</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6">
+                            <div class="empty-state compact">
+                                <strong>هیچ ڕووداوێک نییە</strong>
+                                <span>سوابقی ئەم کارمەندە هێشتا تۆمار نەکراوە.</span>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </article>
+</section>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends 'employees/base.html' %}
+{% block title %}هیستوری ئەرکەکان{% endblock %}
+{% block banner_class %}page-banner-task-history{% endblock %}
+
+{% block content %}
+<section class="page-header-card">
+    <div>
+        <div class="eyebrow">سوابقی کار</div>
+        <h2 class="section-title">هیستوری ئەرکە تەواوکراوەکان</h2>
+        <p class="section-copy">شوێنکەوتنی ئەو ئەرکانەی تەواو کراون، لەگەڵ خاڵ و ئەنجامدەر.</p>
+    </div>
+    <div class="header-actions">
+        <a href="/tasks/" class="btn btn-secondary">گەڕانەوە بۆ پلانەکان</a>
+    </div>
+</section>
+
+<section class="surface-card">
+    <div class="table-shell">
+        <table class="table app-table align-middle">
+            <thead>
+                <tr>
+                    <th>ئەرک</th>
+                    <th>ئەنجامدەر</th>
+                    <th>خاڵ</th>
+                    <th>کاتی واقعی</th>
+                    <th>تێبینی</th>
+                    <th>کردار</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for task in tasks %}
+                <tr>
+                    <td>{{ task.title }}</td>
+                    <td>{{ task.completed_by|default:"-" }}</td>
+                    <td><span class="score-badge">{{ task.score_awarded }}</span></td>
+                    <td>{{ task.actual_hours }}</td>
+                    <td>{{ task.close_note|default:"-" }}</td>
+                    <td>
+                        <a href="/tasks/{{ task.id }}/delete/" class="btn btn-danger btn-sm">سڕینەوە</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6">
+                        <div class="empty-state compact">
+                            <strong>هیچ شتێک نییە</strong>
+                            <span>کاتێک پلانێک تەواو بکرێت، لێرە دەبینرێت.</span>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

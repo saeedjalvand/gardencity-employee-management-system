@@ -6,58 +6,153 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Garden City EMS{% endblock %}</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@500;700;800&family=Noto+Sans+Arabic:wght@400;500;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="{% static 'css/app.css' %}" rel="stylesheet">
+    <link href="{% static 'css/app.css' %}?v=20260425i" rel="stylesheet">
 </head>
-<body>
-
+<body class="theme-spring">
 {% if request.user.is_authenticated %}
-<div class="topbar-wrap py-3 mb-4">
-    <div class="container">
-        <div class="d-flex justify-content-between align-items-center gap-3 flex-wrap nav-responsive">
-            <div class="d-flex align-items-center gap-3">
-                <img src="{% static 'images/garden-city-logo.jpg' %}" alt="logo" style="height:52px; width:auto; border-radius:10px;">
-                <div>
-                    <div class="topbar-brand">Garden City EMS</div>
-                    <div class="page-subtitle">سیستەمی بەڕێوەبردنی کارمەندان و کارەکانی سەوزاییەکان</div>
-                </div>
-            </div>
-
-            <div class="d-flex flex-wrap gap-2 nav-responsive align-items-center">
-                <a href="/dashboard/" class="nav-pill">داشبۆرد</a>
-                <a href="/employees/" class="nav-pill">کارمەندان</a>
-                <a href="/scores/" class="nav-pill">ئاست و خاڵ</a>
-                <a href="/tasks/" class="nav-pill">پلان / To-Do</a>
-                <a href="/maintenance/" class="nav-pill">چاکسازی</a>
-                <a href="/assets/" class="nav-pill">کەرەستە و ئامێر</a>
-                <a href="/admin/" class="nav-pill">بەشی بەڕێوەبەر</a>
-
-                <select id="themeSelect" class="form-select theme-select" onchange="applyTheme(this.value)">
-                    <option value="default">ڕووکاری ڕووناک</option>
-                    <option value="theme-dark">شێوازی شەو</option>
-                    <option value="theme-forest">شێوازی سەوز</option>
-                    <option value="theme-sunset">شێوازی ئاوا بوون</option>
-                    <option value="theme-ocean">شێوازی شین</option>
-                </select>
-
-                <a href="/logout/" class="btn btn-danger">چوونەدەرەوە</a>
+<div class="app-shell">
+    <button type="button" class="sidebar-backdrop" data-sidebar-close aria-label="Close navigation"></button>
+    <aside class="sidebar-panel" id="app-sidebar">
+        <button type="button" class="sidebar-close" data-sidebar-close aria-label="Close navigation">×</button>
+        <div class="brand-block">
+            <img src="{% static 'images/garden-city-logo.jpg' %}" alt="Garden City" class="brand-logo">
+            <div>
+                <div class="brand-kicker">Garden City</div>
+                <div class="brand-title">Employee Hub</div>
+                <div class="brand-copy">سیستەمی بەڕێوەبردنی کارمەندان، پلان و چاکسازی</div>
             </div>
         </div>
-    </div>
+
+        <nav class="sidebar-nav">
+            <a href="/dashboard/" class="nav-link-tile">
+                <span class="nav-link-title">داشبۆرد</span>
+                <span class="nav-link-copy">بینینی کارە گرنگەکان و ئامار</span>
+            </a>
+            <a href="/employees/" class="nav-link-tile">
+                <span class="nav-link-title">کارمەندان</span>
+                <span class="nav-link-copy">پرۆفایل، ژمارە و زانیاریی بنەڕەتی</span>
+            </a>
+            <a href="/scores/" class="nav-link-tile">
+                <span class="nav-link-title">هەڵسەنگاندن</span>
+                <span class="nav-link-copy">خاڵ، کات و ڕووداوەکان</span>
+            </a>
+            <a href="/tasks/" class="nav-link-tile">
+                <span class="nav-link-title">پلانەکان</span>
+                <span class="nav-link-copy">کارە چالاکەکان و تەواوکراوەکان</span>
+            </a>
+            <a href="/maintenance/" class="nav-link-tile">
+                <span class="nav-link-title">چاکسازی</span>
+                <span class="nav-link-copy">داواکاری و دۆخی ئامێرەکان</span>
+            </a>
+            <a href="/assets/" class="nav-link-tile">
+                <span class="nav-link-title">کەرەستە و ئامێر</span>
+                <span class="nav-link-copy">لیستی دارایی و شوێنیان</span>
+            </a>
+            <a href="/notifications/" class="nav-link-tile">
+                <span class="nav-link-title">ئاگادارکردنەوەکان</span>
+                <span class="nav-link-copy">{{ unread_notifications_count }} دانە نەخوێندراوەتەوە</span>
+            </a>
+            {% if request.user.is_staff %}
+            <a href="/admin/" class="nav-link-tile">
+                <span class="nav-link-title">بەشی بەڕێوەبەر</span>
+                <span class="nav-link-copy">بەڕێوەبردنی داتا و دەسەڵات</span>
+            </a>
+            {% endif %}
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="theme-switcher-panel">
+                <div class="theme-switcher-label">Themes</div>
+                <div class="theme-switcher-grid">
+                    <button type="button" class="theme-swatch" data-theme="theme-spring">
+                        <span class="theme-swatch-title">Spring</span>
+                        <span class="theme-swatch-copy">Fresh bloom</span>
+                    </button>
+                    <button type="button" class="theme-swatch" data-theme="theme-summer">
+                        <span class="theme-swatch-title">Summer</span>
+                        <span class="theme-swatch-copy">Lush green</span>
+                    </button>
+                    <button type="button" class="theme-swatch" data-theme="theme-autumn">
+                        <span class="theme-swatch-title">Autumn</span>
+                        <span class="theme-swatch-copy">Warm tones</span>
+                    </button>
+                    <button type="button" class="theme-swatch" data-theme="theme-winter">
+                        <span class="theme-swatch-title">Winter</span>
+                        <span class="theme-swatch-copy">Cool calm</span>
+                    </button>
+                    <button type="button" class="theme-swatch" data-theme="theme-dark">
+                        <span class="theme-swatch-title">Dark</span>
+                        <span class="theme-swatch-copy">Midnight black</span>
+                    </button>
+                </div>
+            </div>
+            <a href="/logout/" class="btn btn-danger w-100 mt-3">چوونەدەرەوە</a>
+        </div>
+    </aside>
+
+    <main class="content-shell">
+        <header class="topbar-panel">
+            <div class="topbar-intro">
+                <button type="button" class="mobile-nav-toggle" data-sidebar-open aria-controls="app-sidebar" aria-label="Open navigation">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <div class="topbar-intro-copy">
+                    <div class="eyebrow">بەخێربێیتەوە</div>
+                    <h1 class="topbar-title">{{ request.user.get_full_name|default:request.user.username }}</h1>
+                    <p class="topbar-copy">ئەمڕۆ دەتوانیت کارە گرنگەکانت بە خێرایی ببینیت و بەڕێوە ببەیت.</p>
+                </div>
+            </div>
+            <div class="status-cluster">
+                <div class="status-pill">
+                    <strong>{{ unread_notifications_count }}</strong>
+                    <span>ئاگادارکردنەوە</span>
+                </div>
+                <div class="status-pill">
+                    <strong>{{ request.user.username }}</strong>
+                    <span>هەژماری چالاک</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="page-body">
+            {% if messages %}
+                <div class="message-stack">
+                    {% for message in messages %}
+                        <div class="app-alert app-alert-{{ message.tags|default:'info' }}">
+                            <div class="app-alert-title">
+                                {% if message.tags == 'error' %}
+                                    هەڵە
+                                {% elif message.tags == 'warning' %}
+                                    ئاگاداری
+                                {% elif message.tags == 'success' %}
+                                    سەرکەوتوو
+                                {% else %}
+                                    زانیاری
+                                {% endif %}
+                            </div>
+                            <div>{{ message }}</div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <section class="page-visual-banner {% block banner_class %}page-banner-default{% endblock %}">
+                <div class="page-visual-banner-inner"></div>
+            </section>
+
+            {% block content %}{% endblock %}
+        </div>
+    </main>
 </div>
+{% else %}
+{% block guest_content %}{% endblock %}
 {% endif %}
-
-<div class="container pb-4">
-    {% if messages %}
-        {% for message in messages %}
-            <div class="alert alert-success">{{ message }}</div>
-        {% endfor %}
-    {% endif %}
-
-    {% block content %}{% endblock %}
-</div>
-
-<script src="{% static 'js/theme.js' %}"></script>
+<script src="{% static 'js/app-shell.js' %}?v=20260425i"></script>
 </body>
 </html>

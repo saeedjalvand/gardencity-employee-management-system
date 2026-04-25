@@ -1,5 +1,13 @@
 from django.contrib import admin
-from .models import Department, Employee, Event, Task, MaintenanceAsset, MaintenanceRequest
+from .models import (
+    Department,
+    Employee,
+    Event,
+    Task,
+    MaintenanceAsset,
+    MaintenanceRequest,
+    Notification,
+)
 
 
 @admin.register(Department)
@@ -40,4 +48,11 @@ class MaintenanceAssetAdmin(admin.ModelAdmin):
 class MaintenanceRequestAdmin(admin.ModelAdmin):
     list_display = ['title', 'asset', 'assigned_to', 'planned_date', 'estimated_hours', 'actual_hours', 'priority', 'status']
     list_filter = ['priority', 'status', 'planned_date']
-    search_fields = ['title', 'description', 'asset__name']
+    search_fields = ['title', 'asset__name', 'asset__code']
+
+
+@admin.register(Notification)
+class NotificationAdmin(admin.ModelAdmin):
+    list_display = ['title', 'user', 'is_read', 'created_at']
+    list_filter = ['is_read', 'created_at']
+    search_fields = ['title', 'message', 'user__username']

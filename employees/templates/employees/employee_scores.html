@@ -1,45 +1,61 @@
 {% extends 'employees/base.html' %}
-{% block title %}ئاست و خاڵ{% endblock %}
+{% block title %}هەڵسەنگاندن و خاڵ{% endblock %}
+{% block banner_class %}page-banner-scores{% endblock %}
 
 {% block content %}
-<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+<section class="page-header-card">
     <div>
-        <h1 class="page-title">هەڵسەنگاندن و خاڵی کارمەندان</h1>
-        <div class="page-subtitle">خاڵی ئەرێنی، خراپ، کۆی گشتی و ماوەی کار</div>
+        <div class="eyebrow">ڕیزبەندی کارمەندان</div>
+        <h2 class="section-title">هەڵسەنگاندن و کاتی کار</h2>
+        <p class="section-copy">کۆی خاڵی ئەرێنی و نەرێنی، ماوەی کار و ژمارەی هەڵسەنگاندنەکان.</p>
     </div>
-    {% if perms.employees.add_event %}
-    <a href="/add-event/" class="btn btn-success">تۆمارکردنی هەڵسەنگاندنی نوێ</a>
-    {% endif %}
-</div>
+    <div class="header-actions">
+        {% if perms.employees.add_event %}
+        <a href="/add-event/" class="btn btn-success">تۆمارکردنی هەڵسەنگاندن</a>
+        {% endif %}
+        <a href="/employees/" class="btn btn-secondary">گەڕانەوە بۆ کارمەندان</a>
+    </div>
+</section>
 
-<div class="glass-card p-4">
-    <table class="table table-bordered table-striped text-center align-middle">
-        <thead>
-            <tr>
-                <th>ناو</th>
-                <th>پۆست</th>
-                <th>بەش</th>
-                <th>ئەرێنی</th>
-                <th>نەرێنی</th>
-                <th>خاڵی کۆتایی</th>
-                <th>کۆی کات</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for emp in data %}
-            <tr>
-                <td>{{ emp.name }}</td>
-                <td>{{ emp.position }}</td>
-                <td>{{ emp.department }}</td>
-                <td class="text-success fw-bold">{{ emp.positive }}</td>
-                <td class="text-danger fw-bold">{{ emp.negative }}</td>
-                <td class="fw-bold">{{ emp.score }}</td>
-                <td>{{ emp.duration }}</td>
-            </tr>
-            {% empty %}
-            <tr><td colspan="7">هیچ داتایەک تۆمار نەکراوە.</td></tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
+<section class="surface-card">
+    <div class="table-shell">
+        <table class="table app-table align-middle text-center">
+            <thead>
+                <tr>
+                    <th>کارمەند</th>
+                    <th>پۆست</th>
+                    <th>بەش</th>
+                    <th>ئەرێنی</th>
+                    <th>نەرێنی</th>
+                    <th>کۆی خاڵ</th>
+                    <th>کۆی کات</th>
+                    <th>ژمارەی ڕووداو</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for emp in data %}
+                <tr>
+                    <td><a href="/employees/{{ emp.employee_id }}/" class="primary-link">{{ emp.name }}</a></td>
+                    <td>{{ emp.position }}</td>
+                    <td>{{ emp.department }}</td>
+                    <td class="text-success fw-bold">{{ emp.positive }}</td>
+                    <td class="text-danger fw-bold">{{ emp.negative }}</td>
+                    <td><span class="score-badge">{{ emp.score }}</span></td>
+                    <td>{{ emp.duration }}</td>
+                    <td>{{ emp.event_total }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="8">
+                        <div class="empty-state compact">
+                            <strong>هیچ داتایەک نییە</strong>
+                            <span>کاتێک ڕووداو تۆمار بکرێت، ئەم خشتەیە پڕ دەبێت.</span>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
 {% endblock %}

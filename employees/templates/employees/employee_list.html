@@ -1,48 +1,68 @@
 {% extends 'employees/base.html' %}
 {% block title %}کارمەندان{% endblock %}
+{% block banner_class %}page-banner-employees{% endblock %}
 
 {% block content %}
-<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+<section class="page-header-card">
     <div>
-        <h1 class="page-title">کارمەندان</h1>
-        <div class="page-subtitle">لیستی ستافی سەوزاییەکان، لەندسکیپ و خزمەتگوزاری</div>
+        <div class="eyebrow">تیمی کار</div>
+        <h2 class="section-title">لیستی کارمەندان</h2>
+        <p class="section-copy">بینینی هەموو کارمەندان بە زانیاریی بنەڕەتی، ژمارەی ڕووداو و ئەرکەکان.</p>
     </div>
-
-    <div class="d-flex gap-2 flex-wrap">
+    <div class="header-actions">
         {% if perms.employees.add_employee %}<a href="/add-employee/" class="btn btn-primary">زیادکردنی کارمەند</a>{% endif %}
-        {% if perms.employees.add_event %}<a href="/add-event/" class="btn btn-success">تۆمارکردنی هەڵسەنگاندن</a>{% endif %}
-        <a href="/scores/" class="btn btn-warning">خاڵ و هەڵسەنگاندن</a>
+        {% if perms.employees.add_event %}<a href="/add-event/" class="btn btn-success">تۆمارکردنی ڕووداو</a>{% endif %}
+        <a href="/scores/" class="btn btn-secondary">بینینی هەڵسەنگاندن</a>
     </div>
-</div>
+</section>
 
-<div class="glass-card p-4">
-    <table class="table table-bordered table-striped align-middle">
-        <thead>
-            <tr>
-                <th>ناو</th>
-                <th>کۆد</th>
-                <th>پۆست</th>
-                <th>بەش</th>
-                <th>تەلەفۆن</th>
-                <th>مۆڵەتی تۆمارکردن</th>
-                <th>سەرپەرشتیار</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for emp in employees %}
-            <tr>
-                <td>{{ emp.name }}</td>
-                <td>{{ emp.code }}</td>
-                <td>{{ emp.position }}</td>
-                <td>{{ emp.department }}</td>
-                <td>{{ emp.phone }}</td>
-                <td>{{ emp.can_enter_data|yesno:"بەڵێ,نەخێر" }}</td>
-                <td>{{ emp.is_supervisor|yesno:"بەڵێ,نەخێر" }}</td>
-            </tr>
-            {% empty %}
-            <tr><td colspan="7">هیچ کارمەندێک تۆمار نەکراوە.</td></tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
+<section class="surface-card">
+    <div class="table-shell">
+        <table class="table app-table align-middle">
+            <thead>
+                <tr>
+                    <th>کارمەند</th>
+                    <th>پۆست</th>
+                    <th>بەش</th>
+                    <th>تەلەفۆن</th>
+                    <th>ڕووداو</th>
+                    <th>ئەرکی سپێردراو</th>
+                    <th>دەسەڵات</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for emp in employees %}
+                <tr>
+                    <td>
+                        <div class="title-cell">
+                            <a href="/employees/{{ emp.id }}/" class="primary-link">{{ emp.name }}</a>
+                            <span>{{ emp.code }}</span>
+                        </div>
+                    </td>
+                    <td>{{ emp.position }}</td>
+                    <td>{{ emp.department }}</td>
+                    <td>{{ emp.phone|default:"-" }}</td>
+                    <td><span class="soft-pill">{{ emp.event_total }}</span></td>
+                    <td><span class="soft-pill">{{ emp.assigned_task_total }}</span></td>
+                    <td>
+                        <div class="badge-group">
+                            <span class="mini-badge {% if emp.can_enter_data %}mini-badge-success{% endif %}">تۆمار: {{ emp.can_enter_data|yesno:"بەڵێ,نەخێر" }}</span>
+                            <span class="mini-badge {% if emp.is_supervisor %}mini-badge-warm{% endif %}">سەرپەرشتیار: {{ emp.is_supervisor|yesno:"بەڵێ,نەخێر" }}</span>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7">
+                        <div class="empty-state compact">
+                            <strong>هیچ کارمەندێک تۆمار نەکراوە</strong>
+                            <span>لە دوگمەی زیادکردنی کارمەندەوە دەستپێبکە.</span>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
 {% endblock %}

@@ -1,130 +1,153 @@
 {% extends 'employees/base.html' %}
 {% block title %}داشبۆرد{% endblock %}
+{% block banner_class %}page-banner-dashboard{% endblock %}
 
 {% block content %}
-<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
-    <div>
-        <h1 class="page-title">داشبۆردی بەڕێوەبردنی سەوزاییەکان</h1>
-        <div class="page-subtitle">بینینی گشتیی کارمەندان، پلانەکان، چاکسازی و هەڵسەنگاندن</div>
+<section class="hero-panel">
+    <div class="hero-copy">
+        <span class="hero-chip">ناوەندی بەڕێوەبردن</span>
+        <h2>بینینی دۆخی تیم، کارە گرنگەکان و داواکارییە چالاکەکان</h2>
+        <p>لە یەک شاشەدا دەتوانیت دۆخی کارمەندان، پلان، چاکسازی و ئاگادارکردنەوەکان بخوێنیت و زوو کردار بکەیت.</p>
     </div>
-    <div class="quick-links">
-        {% if perms.employees.add_employee %}<a href="/add-employee/" class="btn btn-primary">زیادکردنی کارمەند</a>{% endif %}
-        {% if perms.employees.add_task %}<a href="/add-task/" class="btn btn-warning">زیادکردنی پلان</a>{% endif %}
-        {% if perms.employees.add_event %}<a href="/add-event/" class="btn btn-success">تۆمارکردنی هەڵسەنگاندن</a>{% endif %}
-        {% if perms.employees.add_maintenancerequest %}<a href="/add-maintenance/" class="btn btn-info">تۆمارکردنی چاکسازی</a>{% endif %}
+    <div class="hero-actions">
+        <a href="/tasks/" class="btn btn-warning">چوون بۆ پلانەکان</a>
+        <a href="/employees/" class="btn btn-secondary">بینینی کارمەندان</a>
     </div>
-</div>
+</section>
 
-<div class="row g-4 mb-4">
-    <div class="col-md-3">
-        <div class="glass-card stat-card">
-            <span class="badge-soft">کارمەندان</span>
-            <h3>{{ total_employees }}</h3>
-            <p>ژمارەی گشتی کارمەندان</p>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="glass-card stat-card">
-            <span class="badge-soft">پلانەکان</span>
-            <h3>{{ total_tasks }}</h3>
-            <p>کۆی گشتی پلانەکان</p>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="glass-card stat-card">
-            <span class="badge-soft">لە جێبەجێکردندا</span>
-            <h3>{{ open_tasks }}</h3>
-            <p>پلانە کراوەکان</p>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="glass-card stat-card">
-            <span class="badge-soft">چاکسازییە کراوەکان</span>
-            <h3>{{ open_maintenance }}</h3>
-            <p>داواکارییە کاراكان</p>
-        </div>
-    </div>
-</div>
+<section class="stats-grid">
+    <article class="stat-surface">
+        <span class="stat-label">کارمەندان</span>
+        <strong>{{ employee_count }}</strong>
+        <p>{{ active_employee_count }} دانە چالاکن</p>
+    </article>
+    <article class="stat-surface">
+        <span class="stat-label">پلانە چالاکەکان</span>
+        <strong>{{ task_count }}</strong>
+        <p>کارەکان کە هێشتا تەواو نەبوون</p>
+    </article>
+    <article class="stat-surface">
+        <span class="stat-label">ڕووداوەکان</span>
+        <strong>{{ event_count }}</strong>
+        <p>هەموو هەڵسەنگاندن و تۆمارەکان</p>
+    </article>
+    <article class="stat-surface">
+        <span class="stat-label">چاکسازییە چالاکەکان</span>
+        <strong>{{ maintenance_open_count }}</strong>
+        <p>داواکارییە نەداخراوەکان</p>
+    </article>
+</section>
 
-<div class="row g-4 mb-4">
-    <div class="col-lg-7">
-        <div class="glass-card p-4 h-100">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h4 class="mb-0">باشترین کارمەندان</h4>
-                <a href="/scores/" class="btn btn-outline-secondary btn-sm">بینینی هەموو</a>
-            </div>
-            <table class="table table-striped align-middle">
-                <thead>
-                    <tr>
-                        <th>ناو</th>
-                        <th>پۆست</th>
-                        <th>خاڵ</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for row in score_rows %}
-                    <tr>
-                        <td>{{ row.employee.name }}</td>
-                        <td>{{ row.employee.position }}</td>
-                        <td><strong>{{ row.score }}</strong></td>
-                    </tr>
-                    {% empty %}
-                    <tr><td colspan="3">هێشتا هیچ داتایەک تۆمار نەکراوە.</td></tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <div class="col-lg-5">
-        <div class="glass-card p-4 h-100">
-            <h4 class="mb-3">دەستگەیشتنی خێرا</h4>
-            <div class="d-grid gap-2">
-                <a href="/employees/" class="btn btn-outline-primary">لیستی کارمەندان</a>
-                <a href="/tasks/" class="btn btn-outline-warning">پلان / To-Do</a>
-                <a href="/maintenance/" class="btn btn-outline-info">داواکاریی چاکسازی</a>
-                <a href="/assets/" class="btn btn-outline-secondary">کەرەستە و ئامێر</a>
-                <a href="/admin/" class="btn btn-outline-dark">بەڕێوەبردنی سیستەم</a>
+<section class="content-grid two-col">
+    <article class="surface-card">
+        <div class="section-heading">
+            <div>
+                <div class="eyebrow">دەستگەیشتنی خێرا</div>
+                <h3>شوێنی خێرای کارکردن</h3>
             </div>
         </div>
-    </div>
-</div>
-
-<div class="row g-4">
-    <div class="col-lg-6">
-        <div class="glass-card p-4">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h5 class="mb-0">دوایین پلانەکان</h5>
-                <a href="/tasks/" class="btn btn-sm btn-outline-secondary">زیاتر</a>
-            </div>
-            <ul class="list-group list-group-flush">
-                {% for item in recent_tasks %}
-                <li class="list-group-item px-0">
-                    <strong>{{ item.title }}</strong> — {{ item.status }}
-                </li>
-                {% empty %}
-                <li class="list-group-item px-0">هیچ پلانێک تۆمار نەکراوە.</li>
-                {% endfor %}
-            </ul>
+        <div class="action-grid">
+            <a href="/employees/" class="action-card">
+                <strong>کارمەندان</strong>
+                <span>بینینی تیم و وردەکاری کارمەندەکان</span>
+            </a>
+            <a href="/scores/" class="action-card">
+                <strong>هەڵسەنگاندن</strong>
+                <span>پشکنینی خاڵ و کاتی کار</span>
+            </a>
+            <a href="/tasks/" class="action-card">
+                <strong>پلان</strong>
+                <span>بەڕێوەبردنی ئەرکە چالاکەکان</span>
+            </a>
+            <a href="/maintenance/" class="action-card">
+                <strong>چاکسازی</strong>
+                <span>شوێنکەوتنی داواکارییەکان</span>
+            </a>
         </div>
-    </div>
+    </article>
 
-    <div class="col-lg-6">
-        <div class="glass-card p-4">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h5 class="mb-0">دوایین چاکسازییەکان</h5>
-                <a href="/maintenance/" class="btn btn-sm btn-outline-secondary">زیاتر</a>
+    <article class="surface-card">
+        <div class="section-heading">
+            <div>
+                <div class="eyebrow">باشترین کارمەندان</div>
+                <h3>ڕیزبەندی بە پێی خاڵ</h3>
             </div>
-            <ul class="list-group list-group-flush">
-                {% for item in recent_maintenance %}
-                <li class="list-group-item px-0">
-                    <strong>{{ item.title }}</strong> — {{ item.status }}
-                </li>
-                {% empty %}
-                <li class="list-group-item px-0">هیچ داواکارییەکی چاکسازی تۆمار نەکراوە.</li>
-                {% endfor %}
-            </ul>
+            <a href="/scores/" class="btn btn-secondary btn-sm">بینینی هەموو</a>
         </div>
-    </div>
-</div>
+        <div class="stack-list">
+            {% for emp in top_employees %}
+                <div class="rank-row">
+                    <div>
+                        <strong>{{ emp.name }}</strong>
+                        <span>{{ emp.position }} | {{ emp.department }}</span>
+                    </div>
+                    <div class="score-badge">{{ emp.total_score }} خاڵ</div>
+                </div>
+            {% empty %}
+                <div class="empty-state compact">
+                    <strong>هێشتا داتایەک نییە</strong>
+                    <span>کاتێک ڕووداوەکان تۆمار بکرێن، باشترین کارمەندان لێرە دەردەکەون.</span>
+                </div>
+            {% endfor %}
+        </div>
+    </article>
+</section>
+
+<section class="content-grid two-col">
+    <article class="visual-photo-card">
+        <div class="visual-photo-card-inner"></div>
+    </article>
+
+    <article class="surface-card">
+        <div class="section-heading">
+            <div>
+                <div class="eyebrow">دواین پلانەکان</div>
+                <h3>کارەکانی نزیک</h3>
+            </div>
+            <a href="/tasks/" class="btn btn-secondary btn-sm">هەموو پلانەکان</a>
+        </div>
+        <div class="stack-list">
+            {% for task in latest_tasks %}
+                <div class="timeline-row">
+                    <div>
+                        <strong>{{ task.title }}</strong>
+                        <span>{{ task.assigned_to|default:"بەبێ دیاریکردن" }} | {{ task.planned_date|default:"بەروار نییە" }}</span>
+                    </div>
+                    <div class="soft-pill">{{ task.get_status_display }}</div>
+                </div>
+            {% empty %}
+                <div class="empty-state compact">
+                    <strong>هیچ پلانێک نییە</strong>
+                    <span>بۆ دەستپێکردن، پلانێکی نوێ زیاد بکە.</span>
+                </div>
+            {% endfor %}
+        </div>
+    </article>
+
+    <article class="surface-card">
+        <div class="section-heading">
+            <div>
+                <div class="eyebrow">دواین چاکسازییەکان</div>
+                <h3>بارودۆخی ئامێر و داواکاری</h3>
+            </div>
+            <a href="/maintenance/" class="btn btn-secondary btn-sm">هەموو داواکارییەکان</a>
+        </div>
+        <div class="stack-list">
+            {% for item in latest_maintenance_requests %}
+                <div class="timeline-row">
+                    <div>
+                        <strong>{{ item.title }}</strong>
+                        <span>{{ item.asset }} | {{ item.assigned_to|default:"بەبێ دیاریکردن" }}</span>
+                    </div>
+                    <div class="soft-pill">{{ item.get_status_display }}</div>
+                </div>
+            {% empty %}
+                <div class="empty-state compact">
+                    <strong>هیچ داواکارییەک نییە</strong>
+                    <span>کاتێک داواکارییەکی چاکسازی تۆمار بکرێت، لێرە دەردەکەوێت.</span>
+                </div>
+            {% endfor %}
+        </div>
+    </article>
+</section>
 {% endblock %}

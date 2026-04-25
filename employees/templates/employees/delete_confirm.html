@@ -1,0 +1,21 @@
+{% extends 'employees/base.html' %}
+{% block title %}دڵنیابوونەوەی سڕینەوە{% endblock %}
+{% block banner_class %}page-banner-delete{% endblock %}
+
+{% block content %}
+<section class="surface-card confirm-card">
+    <div class="eyebrow">ئامانجی هەستیار</div>
+    <h2 class="section-title">دڵنیابوونەوەی سڕینەوە</h2>
+    <p class="section-copy">ئەم کردارە ناگەڕێتەوە. تکایە دڵنیابە لەوەی دەتەوێت ئەم ئایتمە بسڕیتەوە.</p>
+
+    <div class="danger-box">
+        <strong>{{ object_name }}</strong>
+    </div>
+
+    <form method="POST" class="form-actions">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">بەڵێ، بسڕەوە</button>
+        <a href="{{ back_url }}" class="btn btn-secondary">پاشگەزبوونەوە</a>
+    </form>
+</section>
+{% endblock %}

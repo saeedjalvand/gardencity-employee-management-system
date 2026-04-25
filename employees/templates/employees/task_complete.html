@@ -1,29 +1,23 @@
 {% extends 'employees/base.html' %}
-{% block title %}{{ title }}{% endblock %}
-{% block banner_class %}page-banner-form{% endblock %}
+{% block title %}تەواوکردنی ئەرک{% endblock %}
+{% block banner_class %}page-banner-task-complete{% endblock %}
 
 {% block content %}
 <section class="form-layout">
     <div class="surface-card form-intro">
-        <div class="eyebrow">فۆرم</div>
-        <h2 class="section-title">{{ title }}</h2>
-        <p class="section-copy">زانیارییەکان بە وردی پڕبکەوە. خانە گرنگەکان بە شێوەیەکی ڕێکخراو پیشان دەدرێن بۆ ئەوەی کارکردن خێراتر بێت.</p>
-        <div class="info-panel">
-            <strong>ئامانج</strong>
-            <span>داتای دروست و پاک بکەوە بۆ ئەوەی لە داشبۆرد، هەڵسەنگاندن و شوێنکەوتن بە باشی دەربکەوێت.</span>
+        <div class="eyebrow">تەواوکردن</div>
+        <h2 class="section-title">تەواوکردنی ئەرک</h2>
+        <p class="section-copy">{{ task.title }}</p>
+        <div class="detail-list compact">
+            <div><span>ئەنجامدەر</span><strong>{{ task.assigned_to|default:"بەبێ دیاریکردن" }}</strong></div>
+            <div><span>بەروار</span><strong>{{ task.planned_date|default:"-" }}</strong></div>
+            <div><span>پێشبینی</span><strong>{{ task.estimated_hours }}</strong></div>
         </div>
     </div>
 
     <div class="surface-card">
         <form method="POST" class="smart-form">
             {% csrf_token %}
-            {% if form.non_field_errors %}
-                <div class="app-alert app-alert-error">
-                    <div class="app-alert-title">کێشەی فۆرم</div>
-                    <div>{{ form.non_field_errors }}</div>
-                </div>
-            {% endif %}
-
             <div class="form-grid">
                 {% for field in form %}
                     <div class="field-block {% if field.field.widget.input_type == 'checkbox' %}field-block-checkbox{% endif %}">
@@ -38,9 +32,8 @@
                     </div>
                 {% endfor %}
             </div>
-
             <div class="form-actions">
-                <button type="submit" class="btn brand-gradient">پاشەکەوتکردن</button>
+                <button type="submit" class="btn btn-success">تۆمارکردنی تەواوبوون</button>
                 <a href="{{ back_url }}" class="btn btn-secondary">گەڕانەوە</a>
             </div>
         </form>

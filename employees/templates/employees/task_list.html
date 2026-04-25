@@ -1,47 +1,84 @@
 {% extends 'employees/base.html' %}
 {% block title %}پلانەکان{% endblock %}
+{% block banner_class %}page-banner-tasks{% endblock %}
 
 {% block content %}
-<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+<section class="page-header-card">
     <div>
-        <h1 class="page-title">پلانەکان / To-Do</h1>
-        <div class="page-subtitle">ڕێکخستنی کاری سەوزاییەکان، ئاودان، پاککردنەوە، هەرس و چاودێری</div>
+        <div class="eyebrow">بەڕێوەبردنی ئەرک</div>
+        <h2 class="section-title">پلانە چالاکەکان</h2>
+        <p class="section-copy">ئەرکەکانی هێشتا تەواو نەبوو، بەروار، گرنگی و شوێنیان لە یەک شوێن.</p>
     </div>
-    {% if perms.employees.add_task %}
-    <a href="/add-task/" class="btn btn-warning">زیادکردنی پلان</a>
-    {% endif %}
-</div>
+    <div class="header-actions">
+        {% if perms.employees.add_task %}
+            <a href="/add-task/" class="btn btn-warning">زیادکردنی پلان</a>
+        {% endif %}
+        <a href="/tasks/history/" class="btn btn-secondary">هیستوری ئەرکەکان</a>
+    </div>
+</section>
 
-<div class="glass-card p-4">
-    <table class="table table-bordered table-striped align-middle">
-        <thead>
-            <tr>
-                <th>ناونیشان</th>
-                <th>ئەنجامدەر</th>
-                <th>بەروار</th>
-                <th>کاتی پێشبینی کراو</th>
-                <th>کاتی واقعی</th>
-                <th>گرنگی</th>
-                <th>دۆخ</th>
-                <th>شوێن</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for task in tasks %}
-            <tr>
-                <td>{{ task.title }}</td>
-                <td>{{ task.assigned_to }}</td>
-                <td>{{ task.planned_date }}</td>
-                <td>{{ task.estimated_hours }}</td>
-                <td>{{ task.actual_hours }}</td>
-                <td>{{ task.priority }}</td>
-                <td>{{ task.status }}</td>
-                <td>{{ task.location }}</td>
-            </tr>
-            {% empty %}
-            <tr><td colspan="8">هیچ پلانێک تۆمار نەکراوە.</td></tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
+<section class="surface-card">
+    <div class="section-heading">
+        <div>
+            <div class="eyebrow">کارە ناتەواوەکان</div>
+            <h3>{{ tasks|length }} ئەرک لە چالاکی‌دایە</h3>
+        </div>
+    </div>
+
+    <div class="table-shell">
+        <table class="table app-table align-middle">
+            <thead>
+                <tr>
+                    <th>ناونیشان</th>
+                    <th>ئەنجامدەر</th>
+                    <th>بەروار</th>
+                    <th>پێشبینی</th>
+                    <th>واقعی</th>
+                    <th>گرنگی</th>
+                    <th>دۆخ</th>
+                    <th>شوێن</th>
+                    <th>کردار</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for task in tasks %}
+                <tr>
+                    <td>
+                        <div class="title-cell">
+                            <strong>{{ task.title }}</strong>
+                            <span>{{ task.description|default:"بەبێ وەسف" }}</span>
+                        </div>
+                    </td>
+                    <td>{{ task.assigned_to|default:"بەبێ دیاریکردن" }}</td>
+                    <td>{{ task.planned_date|default:"-" }}</td>
+                    <td>{{ task.estimated_hours }}</td>
+                    <td>{{ task.actual_hours }}</td>
+                    <td><span class="mini-badge mini-badge-warm">{{ task.get_priority_display }}</span></td>
+                    <td><span class="mini-badge">{{ task.get_status_display }}</span></td>
+                    <td>{{ task.location|default:"-" }}</td>
+                    <td>
+                        <div class="table-actions">
+                            {% if perms.employees.change_task %}
+                                <a href="/tasks/{{ task.id }}/edit/" class="btn btn-warning btn-sm">دەستکاری</a>
+                                <a href="/tasks/{{ task.id }}/complete/" class="btn btn-success btn-sm">تەواوکردن</a>
+                            {% else %}
+                                <span class="text-muted">مۆڵەت نییە</span>
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="9">
+                        <div class="empty-state compact">
+                            <strong>هیچ ئەرکێکی ناتەواو نییە</strong>
+                            <span>پلانێکی نوێ زیاد بکە یان هیستوری ئەرکەکان ببینە.</span>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
 {% endblock %}

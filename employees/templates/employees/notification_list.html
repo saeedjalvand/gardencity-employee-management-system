@@ -1,0 +1,45 @@
+{% extends 'employees/base.html' %}
+{% block title %}ئاگادارکردنەوەکان{% endblock %}
+{% block banner_class %}page-banner-notifications{% endblock %}
+
+{% block content %}
+<section class="page-header-card">
+    <div>
+        <div class="eyebrow">هۆشیاری</div>
+        <h2 class="section-title">ئاگادارکردنەوەکان</h2>
+        <p class="section-copy">هەموو ئاگادارکردنەوەکانی تایبەت بە هەژمارەکەت لێرەن.</p>
+    </div>
+    <div class="header-actions">
+        <a href="/dashboard/" class="btn btn-secondary">گەڕانەوە بۆ داشبۆرد</a>
+    </div>
+</section>
+
+<section class="surface-card">
+    <div class="stack-list">
+        {% for n in notifications %}
+            <article class="notification-card {% if not n.is_read %}notification-card-unread{% endif %}">
+                <div>
+                    <div class="notification-title-row">
+                        <strong>{{ n.title }}</strong>
+                        <span class="mini-badge {% if n.is_read %}mini-badge-success{% else %}mini-badge-warm{% endif %}">
+                            {% if n.is_read %}خوێندراوەتەوە{% else %}نەخوێندراوەتەوە{% endif %}
+                        </span>
+                    </div>
+                    <p class="notification-copy">{{ n.message }}</p>
+                    <span class="notification-time">{{ n.created_at|date:"Y-m-d H:i" }}</span>
+                </div>
+                <div>
+                    {% if not n.is_read %}
+                        <a href="/notifications/{{ n.id }}/read/" class="btn btn-success btn-sm">وەک خوێندراوە نیشان بدە</a>
+                    {% endif %}
+                </div>
+            </article>
+        {% empty %}
+            <div class="empty-state">
+                <strong>هیچ ئاگادارکردنەوەیەک نییە</strong>
+                <span>کاتێک ئەرکێک بۆ تۆ دابنرێت یان شتێکی نوێ هەبێت، لێرە دەردەکەوێت.</span>
+            </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

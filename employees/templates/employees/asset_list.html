@@ -1,41 +1,54 @@
 {% extends 'employees/base.html' %}
 {% block title %}کەرەستە و ئامێر{% endblock %}
+{% block banner_class %}page-banner-assets{% endblock %}
 
 {% block content %}
-<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+<section class="page-header-card">
     <div>
-        <h1 class="page-title">کەرەستە و ئامێرەکانی چاکسازی</h1>
-        <div class="page-subtitle">تۆمارکردن و بەڕێوەبردنی سیستەمی ئاودان و کەرەستەکانی مەیدان</div>
+        <div class="eyebrow">دارایی</div>
+        <h2 class="section-title">کەرەستە و ئامێرەکانی چاکسازی</h2>
+        <p class="section-copy">لیستی ئامێرەکان بە جۆر، شوێن و دۆخی چالاکی.</p>
     </div>
-    {% if perms.employees.add_maintenanceasset %}
-    <a href="/add-asset/" class="btn btn-secondary">زیادکردنی کەرەستە</a>
-    {% endif %}
-</div>
+    <div class="header-actions">
+        {% if perms.employees.add_maintenanceasset %}
+        <a href="/add-asset/" class="btn btn-secondary">زیادکردنی کەرەستە</a>
+        {% endif %}
+    </div>
+</section>
 
-<div class="glass-card p-4">
-    <table class="table table-bordered table-striped align-middle">
-        <thead>
-            <tr>
-                <th>ناو</th>
-                <th>جۆر</th>
-                <th>شوێن</th>
-                <th>کۆد</th>
-                <th>چالاک</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for asset in assets %}
-            <tr>
-                <td>{{ asset.name }}</td>
-                <td>{{ asset.asset_type }}</td>
-                <td>{{ asset.location }}</td>
-                <td>{{ asset.code }}</td>
-                <td>{{ asset.active|yesno:"بەڵێ,نەخێر" }}</td>
-            </tr>
-            {% empty %}
-            <tr><td colspan="5">هیچ کەرەستەیەک تۆمار نەکراوە.</td></tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
+<section class="surface-card">
+    <div class="table-shell">
+        <table class="table app-table align-middle">
+            <thead>
+                <tr>
+                    <th>ناو</th>
+                    <th>جۆر</th>
+                    <th>شوێن</th>
+                    <th>کۆد</th>
+                    <th>بارودۆخ</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for asset in assets %}
+                <tr>
+                    <td>{{ asset.name }}</td>
+                    <td>{{ asset.asset_type }}</td>
+                    <td>{{ asset.location }}</td>
+                    <td>{{ asset.code }}</td>
+                    <td><span class="mini-badge {% if asset.active %}mini-badge-success{% else %}mini-badge-danger{% endif %}">{{ asset.active|yesno:"چالاک,ناچالاک" }}</span></td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5">
+                        <div class="empty-state compact">
+                            <strong>هیچ کەرەستەیەک تۆمار نەکراوە</strong>
+                            <span>بۆ بەڕێوەبردنی باشتر، ئامێرەکان زیاد بکە.</span>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
 {% endblock %}
