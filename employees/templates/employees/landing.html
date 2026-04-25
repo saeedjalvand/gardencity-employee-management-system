@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@500;700;800&family=Noto+Sans+Arabic:wght@400;500;700;800&display=swap" rel="stylesheet">
-    <link href="{% static 'css/app.css' %}?v=20260425i" rel="stylesheet">
+    <link href="{% static 'css/app.css' %}?v=20260425k" rel="stylesheet">
 </head>
 <body class="theme-spring">
     <div class="login-layout">
@@ -69,6 +69,10 @@
                 <div class="theme-switcher-panel theme-switcher-panel-inline">
                     <div class="theme-switcher-label">Themes</div>
                     <div class="theme-switcher-grid">
+                        <button type="button" class="theme-swatch" data-theme="theme-light">
+                            <span class="theme-swatch-title">Light</span>
+                            <span class="theme-swatch-copy">Bright clean</span>
+                        </button>
                         <button type="button" class="theme-swatch" data-theme="theme-spring">
                             <span class="theme-swatch-title">Spring</span>
                             <span class="theme-swatch-copy">Fresh bloom</span>
@@ -94,6 +98,6 @@
             </div>
         </section>
     </div>
-    <script src="{% static 'js/app-shell.js' %}?v=20260425i"></script>
+    <script src="{% static 'js/app-shell.js' %}?v=20260425k"></script>
 </body>
 </html>
