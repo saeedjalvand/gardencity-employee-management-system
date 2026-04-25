@@ -1,6 +1,6 @@
 (function () {
     const storageKey = "garden-city-theme";
-    const validThemes = ["theme-spring", "theme-summer", "theme-autumn", "theme-winter", "theme-dark"];
+    const validThemes = ["theme-light", "theme-spring", "theme-summer", "theme-autumn", "theme-winter", "theme-dark"];
     const mobileBreakpoint = 1024;
 
     function getStoredTheme() {
